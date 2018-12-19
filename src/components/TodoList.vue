@@ -7,8 +7,16 @@
       v-model="newTodo"
       @keyup.enter="addTodo"
     >
-    <div v-for="todo in todos" :key="todo.id" class="todo-item">
-      {{todo.task}}
+    <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
+      <div>
+        {{todo.task}}
+      </div>
+      <div 
+        class="remove-item"
+        @click="removeTodo(index)"
+      >
+        &times;
+      </div>
     </div>
   </div>
 </template>
@@ -36,14 +44,19 @@ export default {
   },
   methods: {
     addTodo() {
+      if (this.newTodo.trim().length === 0) {
+        return
+      }
       this.todos.push({
         id: this.idForTodo,
         task: this.newTodo,
         completed: false
       })
-
       this.newTodo = ''
       this.idForTodo++
+    },
+    removeTodo(index) {
+      this.todos.splice(index, 1)
     }
   }
 }
@@ -58,6 +71,21 @@ export default {
 
     &:focus {
       outline: 0;
+    }
+  }
+
+  .todo-item {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .remove-item {
+    cursor: pointer;
+    margin-left: 14px;
+    &:hvoer {
+      color: black;
     }
   }
 </style>
